@@ -54,7 +54,7 @@ class AuthController extends BaseController
         // Store session
         session()->set([
             'id' => $user['id'],
-            'name' => $user['name'],
+            'name' =>ucfirst( $user['name']),
             'email' => $user['email'],
             'role' => $user['role'],
             'logged_in' => true
