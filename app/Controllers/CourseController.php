@@ -10,72 +10,51 @@ class CourseController extends BaseController
 {
     public function index()
     {
-        $courseModel = new CourseModel();
-        $data['courses'] = $courseModel->findAll();
-        return view('courses/index', $data);
+        return view('instructor/courses/index');
     }
 
-    public function create()
+    // Fetch all courses by logged-in instructor
+    public function getCourses()
     {
-        return view('courses/create');
+        $courseModel = new CourseModel();
+        $instructorId = session()->get('id');
+
+        $courses = $courseModel->where('instructor_id', $instructorId)->findAll();
+
+        return $this->response->setJSON($courses);
     }
 
+    // Store new course (AJAX)
     public function store()
     {
         $courseModel = new CourseModel();
+        $instructorId = session()->get('id');
 
-        $file = $this->request->getFile('thumbnail');
-        $thumbnailName = null;
-        if ($file && $file->isValid()) {
-            $thumbnailName = $file->getRandomName();
-            $file->move('uploads/courses', $thumbnailName);
-        }
-
-        $courseModel->insert([
+        $data = [
             'title' => $this->request->getPost('title'),
             'description' => $this->request->getPost('description'),
             'price' => $this->request->getPost('price'),
-            'instructor_id' => session()->get('id'),
+            'instructor_id' => $instructorId,
             'status' => 'active',
-            'thumbnail' => $thumbnailName
+        ];
+
+        $courseModel->insert($data);
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Course added successfully!'
         ]);
-
-        return redirect()->to(base_url('courses'))->with('success', 'Course created successfully!');
     }
 
-    public function edit($id)
-    {
-        $courseModel = new CourseModel();
-        $data['course'] = $courseModel->find($id);
-        return view('courses/edit', $data);
-    }
-
-    public function update($id)
-    {
-        $courseModel = new CourseModel();
-
-        $file = $this->request->getFile('thumbnail');
-        $thumbnailName = $this->request->getPost('old_thumbnail');
-
-        if ($file && $file->isValid()) {
-            $thumbnailName = $file->getRandomName();
-            $file->move('uploads/courses', $thumbnailName);
-        }
-
-        $courseModel->update($id, [
-            'title' => $this->request->getPost('title'),
-            'description' => $this->request->getPost('description'),
-            'price' => $this->request->getPost('price'),
-            'thumbnail' => $thumbnailName
-        ]);
-
-        return redirect()->to(base_url('courses'))->with('success', 'Course updated successfully!');
-    }
-
+    // Delete course
     public function delete($id)
     {
         $courseModel = new CourseModel();
         $courseModel->delete($id);
-        return redirect()->to(base_url('courses'))->with('success', 'Course deleted successfully!');
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Course deleted successfully!'
+        ]);
     }
 }

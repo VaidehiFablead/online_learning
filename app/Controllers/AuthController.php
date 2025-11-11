@@ -24,7 +24,7 @@ class AuthController extends BaseController
             'name'     => $this->request->getPost('name'),
             'email'    => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
-            'role'     => 'student', // default role
+            'role'     => $this->request->getPost('role'),
         ];
 
         $userModel->insert($data);
@@ -54,13 +54,29 @@ class AuthController extends BaseController
         // Store session
         session()->set([
             'id' => $user['id'],
-            'name' =>ucfirst( $user['name']),
+            'name' => ucfirst($user['name']),
             'email' => $user['email'],
             'role' => $user['role'],
             'logged_in' => true
         ]);
 
-        return $this->response->setJSON(['status' => 'success', 'message' => 'Login successful!']);
+        // ✅ Redirect URL based on role
+        $redirectUrl = '';
+        if ($user['role'] === 'student') {
+            $redirectUrl = base_url('student/dashboard');
+        } elseif ($user['role'] === 'instructor') {
+            $redirectUrl = base_url('instructor/dashboard');
+        } elseif ($user['role'] === 'admin') {
+            $redirectUrl = base_url('admin/dashboard');
+        }
+
+        // return $this->response->setJSON(['status' => 'success', 'message' => 'Login successful!']);
+
+        return $this->response->setJSON([
+            'status' => 'success',
+            'message' => 'Login successful!',
+            'redirect' => $redirectUrl
+        ]);
     }
 
     public function logout()
