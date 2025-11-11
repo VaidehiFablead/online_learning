@@ -65,7 +65,7 @@
             gap: 15px;
         }
 
-       .note {
+        .note {
             color: #a33939;
             font-size: 0.85rem;
             text-align: center;
@@ -96,8 +96,17 @@
                 <input type="password" class="form-control" name="password" placeholder="Password" required>
             </div>
 
+            <div class="mb-3">
+                <label>Role</label>
+                <select class="form-control" name="role" required>
+                    <option value="">-- Select Role --</option>
+                    <option value="student">Student</option>
+                    <option value="instructor">Instructor</option>
+                </select>
+            </div>
+
             <button type="submit" class="btn-submit mt-3">SUBMIT</button>
-             <p class="note mt-3">Don’t have an account? <a href="<?= base_url('/') ?>">Login</a></p>
+            <p class="note mt-3">Don’t have an account? <a href="<?= base_url('/') ?>">Login</a></p>
         </form>
     </div>
 

@@ -187,7 +187,8 @@
                             text: response.message,
                             confirmButtonColor: '#3085d6'
                         }).then(() => {
-                            window.location.href = "<?= base_url('dashboard') ?>";
+                            // window.location.href = "<?= base_url('dashboard') ?>";
+                            window.location.href = response.redirect;
                         });
                     } else {
                         Swal.fire({

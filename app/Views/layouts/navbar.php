@@ -3,7 +3,7 @@
         <span class="toggle-btn me-3" id="menu-toggle" style="cursor:pointer;">
             <i class="bi bi-list"></i>
         </span>
-        <a class="navbar-brand text-white fw-bold" href="<?= base_url('dashboard') ?>">Student Portal</a>
+        <a class="navbar-brand text-white fw-bold" href="<?= base_url('dashboard') ?>">Online Learning Portal</a>
         <div class="ms-auto d-flex align-items-center">
             <!-- <span class="me-3">Welcome, <b><?= ucfirst(session('name')) ?? 'Student' ?></b></span>
             <a href="<?= base_url('profile') ?>" class="nav-link">

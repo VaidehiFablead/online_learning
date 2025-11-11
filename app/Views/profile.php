@@ -54,7 +54,7 @@
 
             <div class="d-flex justify-content-between mt-3">
                 <button type="submit" class="btn btn-primary px-4">Update</button>
-                <a href="<?= base_url('dashboard') ?>" class="btn btn-secondary px-4">Back</a>
+                <!-- <a href="<?= base_url('dashboard') ?>" class="btn btn-secondary px-4">Back</a> -->
             </div>
         </form>
     </div>
